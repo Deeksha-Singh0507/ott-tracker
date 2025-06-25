@@ -1,0 +1,25 @@
+{% extends 'ott/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container w-50">
+  <h2 class="mb-3">🔐 Login</h2>
+
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      Invalid username or password. Please try again.
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+
+  <p class="mt-3">Don't have an account? 
+    <a href="{% url 'signup' %}">Sign up here</a>
+  </p>
+</div>
+{% endblock %}

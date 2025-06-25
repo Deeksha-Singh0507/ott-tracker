@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}OTT Tracker{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+
+  <!-- 🧭 Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'show-list' %}">🎬 OTT Tracker</a>
+
+      <div class="d-flex">
+        {% if user.is_authenticated %}
+          <a href="{% url 'watchlist-html' %}" class="btn btn-outline-primary me-2">My Watchlist</a>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline-success me-2">Login</a>
+          <a href="{% url 'signup' %}" class="btn btn-outline-primary">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- 📦 Page Content -->
+  {% block content %}{% endblock %}
+
+</body>
+</html>

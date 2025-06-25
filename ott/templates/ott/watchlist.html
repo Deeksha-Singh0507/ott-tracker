@@ -1,0 +1,75 @@
+{% extends 'ott/base.html' %}
+
+{% block title %}My Watchlist{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">📺 My Watchlist</h2>
+
+  <!-- ✅ Add to Watchlist Form -->
+  <form method="POST" class="mb-4">
+    {% csrf_token %}
+    <div class="d-flex gap-2 w-50">
+      <select name="show_id" class="form-select">
+        <option value="">Select a show</option>
+        {% for show in all_shows %}
+          <option value="{{ show.id }}">{{ show.title }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-success">Add to Watchlist</button>
+    </div>
+  </form>
+
+  <!-- 🔍 Search Form -->
+  <form method="GET" class="mb-4">
+    <input type="text" name="q" placeholder="Search by show title..." class="form-control w-50 d-inline" />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <!-- 📋 Watchlist Table -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Show</th>
+        <th>Watched</th>
+        <th>Watch Later</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in watchlist_items %}
+      <tr>
+        <td>{{ item.show.title }}</td>
+        <td>{{ item.watched }}</td>
+        <td>{{ item.watch_later }}</td>
+        <td>
+          <form method="POST" action="{% url 'watchlist-html' %}" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="delete_id" value="{{ item.id }}">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+
+          <form method="POST" action="{% url 'watchlist-html' %}" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="toggle_watched_id" value="{{ item.id }}">
+            <button type="submit" class="btn btn-warning btn-sm">
+              {% if item.watched %}Unwatch{% else %}Mark Watched{% endif %}
+            </button>
+          </form>
+
+          <form method="POST" action="{% url 'watchlist-html' %}" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="toggle_later_id" value="{{ item.id }}">
+            <button type="submit" class="btn btn-info btn-sm">
+              {% if item.watch_later %}Remove Later{% else %}Watch Later{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">No items in your watchlist.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

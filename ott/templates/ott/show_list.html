@@ -1,0 +1,41 @@
+{% extends 'ott/base.html' %}
+
+{% block title %}OTT Show List{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">🎬 OTT Show List</h2>
+
+  <!-- Search Form -->
+  <form method="GET" class="mb-4">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search by title..." class="form-control w-50 d-inline" />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <!-- Show Table -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Genre</th>
+        <th>Rating</th>
+        <th>Platform</th>
+        <th>Release Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for show in shows %}
+      <tr>
+        <td>{{ show.title }}</td>
+        <td>{{ show.genre }}</td>
+        <td>{{ show.rating }}</td>
+        <td>{{ show.platform }}</td>
+        <td>{{ show.release_date }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">No shows found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
